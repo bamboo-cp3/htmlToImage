@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+
+        html,
+        body {
+            width: 1920px;
+            background: #fff;
+        }
+
+        .content {
+            width: 1920px;
+        }
+
+        .center {
+            width: 1520px;
+            margin: 0 auto;
+            padding: 50px 0 0;
+        }
+
+        .logo {
+            width: 100%;
+            height: 130px;
+        }
+
+        .logo img {
+            width: 190px;
+            height: 75px;
+        }
+
+        .themes {
+            position: relative;
+        }
+
+        .themes-text {
+            display: inline-block;
+            position: absolute;
+            bottom: 140px;
+        }
+
+        .beizi {
+            position: relative;
+            right: 100px;
+            bottom: 50px;
+            width: 1080px;
+            height: 1080px;
+        }
+
+        .acu {
+            font-size: 45px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        span {
+            width: 55px;
+            height: 7px;
+            background: #666;
+            display: block;
+            margin-bottom: 40px;
+        }
+
+        .title {
+            font-size: 30px;
+            color: #3b3b3b;
+            margin-bottom: 50px;
+            width: 570px;
+        }
+
+        .chicun {
+            font-size: 36px;
+            color: #3b3b3b;
+            margin-bottom: 30px;
+        }
+
+        .caizhi {
+            font-size: 32px;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .jiage {
+            font-size: 50px;
+            color: #ff3333;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="show content" id="content1">
+        <div class="center">
+            <div>
+                <div class="themes">
+                    <img class="beizi" src="beizi.jpg" alt="">
+                    <div class="themes-text">
+                        <p class="acu">ACU0472</p>
+                        <span></span>
+                        <p class="title">透彻—菲力中型红酒杯无铅水晶玻璃杯无铅水晶玻璃杯</p>
+                        <p class="chicun">236*69*90mm 500ml</p>
+                        <p class="caizhi">金属喷粉</p>
+                        <p class="jiage">￥21.90</p>
+                    </div>
+                </div>
+                <div id="img-out"></div>
+            </div>
+        </div>
+    </div>
+    <div class="show content" id="content2">
+        <div class="logo">
+            <img src="logo.png" alt="">
+        </div>
+        <div class="themes">
+            <img class="beizi" src="beizi.jpg" alt="">
+            <div class="themes-text">
+                <p class="acu">ACU0472</p>
+                <span></span>
+                <p class="title">透彻—菲力中型红酒杯无铅水晶玻璃杯无铅水晶玻璃杯</p>
+                <p class="chicun">236*69*90mm 500ml</p>
+                <p class="caizhi">金属喷粉</p>
+                <p class="jiage">￥21.90</p>
+            </div>
+        </div>
+        <div id="img-out"></div>
+    </div>
+    <script src="jquery-2.2.4.min.js"></script>
+    <script src="html2canvas.min.js"></script>
+    <script src="base64.min.js"></script>
+    <script src="canvas2image.js"></script>
+    <script src="jszip.min.js"></script>
+    <script src="FileSaver.js"></script>
+    <script>
+        var zip = new JSZip();
+        var img = zip.folder('images');
+        $('.show').each(function (index) {
+            var id = $(this).attr('id');
+            var data = html2canvas(document.getElementById(id), { useCORS: true })
+                .then(function (canvas) {
+                    var image = Canvas2Image.convertToPNG(canvas);
+                    var image_data = $(image).attr('src');
+                    return image_data.split('data:image/png;base64,')[1];
+                });
+
+            img.file('test_' + id + '.jpg', data, { base64: true });
+        })
+
+        zip.generateAsync({ type: "blob" })
+            .then(function (content) {
+                saveAs(content, "example.zip");
+            });
+
+
+
+    </script>
+</body>
+
+</html>
